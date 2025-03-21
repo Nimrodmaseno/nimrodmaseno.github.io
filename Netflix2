@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signature</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            position: relative; /* Make body a positioning context */
+            background-color: #00FF00; /* Shouting green background */
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Align content to the top */
+            align-items: center; /* Center content horizontally */
+            overflow: hidden;
+        }
+
+        /* Heading Styling */
+        h1 {
+            font-size: 48px;
+            color: #FF0000; /* Red color for the text */
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Text shadow for a smart art effect */
+            animation: bounce 2s infinite; /* Bounce animation */
+            margin-top: 20px; /* Add some space from the top */
+        }
+
+        /* Bounce Animation */
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        /* Video Player Container */
+        .video-container {
+            position: relative; /* Make container a positioning context */
+            width: 70%; /* Adjust the width of the video container */
+            max-width: 800px; /* Maximum width for the video container */
+            margin-top: 20px; /* Add some space between the heading and video */
+        }
+
+        /* Video Player Styling */
+        video {
+            width: 100%; /* Make video fill the container */
+            border: 5px solid #FF0000; /* Red border around the video */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* Shadow effect */
+        }
+
+        /* LIVE Watermark Styling */
+        .live-watermark {
+            position: absolute; /* Position the watermark absolutely */
+            top: 10px; /* Distance from the top */
+            right: 10px; /* Distance from the right */
+            display: flex;
+            align-items: center;
+            background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent black background */
+            padding: 5px 10px;
+            border-radius: 5px;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Red Dot Styling */
+        .live-dot {
+            width: 10px;
+            height: 10px;
+            background-color: red;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+
+        /* Function Buttons Container */
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px; /* Space between buttons */
+            margin-top: 20px; /* Space between video and buttons */
+        }
+
+        /* Button Styling */
+        .button-container button {
+            width: 30px; /* Set width to 10px */
+            height: 30px; /* Set height to 10px */
+            border: none;
+            border-radius: 50%; /* Make buttons ellipse-shaped */
+            cursor: pointer;
+            background-color: #007BFF; /* Blue color for buttons */
+            transition: background-color 0.3s ease;
+        }
+
+        .button-container button:hover {
+            background-color: #0056b3; /* Darker blue on hover */
+        }
+
+        /* Three-Dot Icon Styling */
+        .three-dot-icon {
+            position: absolute;
+            top: 10px; /* Distance from the top */
+            left: 10px; /* Distance from the left */
+            font-size: 24px;
+            cursor: pointer;
+            color: #333;
+        }
+
+        /* Menu Styling */
+        .menu {
+            position: absolute;
+            top: 40px; /* Position below the three-dot icon */
+            left: 10px;
+            background-color: rgba(255, 255, 255, 0.9); /* Semi-transparent white background */
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            display: none; /* Hidden by default */
+            flex-direction: column;
+            padding: 10px;
+            z-index: 10; /* Ensure it appears above other elements */
+        }
+
+        .menu button {
+            background: none;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            text-align: left;
+            font-size: 16px;
+            color: #333;
+            transition: background-color 0.3s ease;
+        }
+
+        .menu button:hover {
+            background-color: #f0f0f0; /* Light gray on hover */
+        }
+
+        /* Dark Mode Styling */
+        body.dark-mode {
+            background-color: #333; /* Dark background */
+            color: #fff; /* Light text */
+        }
+
+        body.dark-mode h1 {
+            color: #ffcc00; /* Yellow heading in dark mode */
+        }
+
+        body.dark-mode video {
+            border-color: #ffcc00; /* Yellow border in dark mode */
+        }
+
+        body.dark-mode .three-dot-icon {
+            color: #fff; /* Light text in dark mode */
+        }
+
+        body.dark-mode .menu {
+            background-color: rgba(51, 51, 51, 0.9); /* Semi-transparent dark background */
+        }
+
+        body.dark-mode .menu button {
+            color: #fff; /* Light text in dark mode */
+        }
+
+        body.dark-mode .menu button:hover {
+            background-color: #444; /* Darker gray on hover */
+        }
+
+        /* Signature Styling */
+        .signature {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 24px;
+            color: #333;
+            border-bottom: 2px solid #333;
+            padding-bottom: 5px;
+            position: absolute; /* Position the signature absolutely */
+            bottom: 20px; /* Distance from the bottom */
+            left: 20px; /* Distance from the left */
+        }
+
+        body.dark-mode .signature {
+            color: #fff; /* Light text in dark mode */
+            border-bottom-color: #fff; /* Light border in dark mode */
+        }
+    </style>
+</head>
+<body>
+    <h1>I LOVE CANADA</h1>
+    <!-- Three-Dot Icon -->
+    <div class="three-dot-icon" id="threeDotIcon">&#8942;</div>
+    <!-- Menu -->
+    <div class="menu" id="menu">
+        <button id="home">HOME</button>
+        <button id="myVideos">MY VIDEOS</button>
+        <button id="recentlyWatched">RECENTLY WATCHED</button>
+        <button id="logout">LOGOUT</button>
+    </div>
+    <!-- Video Player Container -->
+    <div class="video-container">
+        <!-- LIVE Watermark -->
+        <div class="live-watermark">
+            <div class="live-dot"></div>
+            LIVE
+        </div>
+        <!-- Video Player -->
+        <video id="videoPlayer" controls>
+            <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+    </div>
+    <!-- Function Buttons -->
+    <div class="button-container">
+        <button id="volumeUp" title="Volume Up"></button>
+        <button id="volumeDown" title="Volume Down"></button>
+        <button id="playNext" title="Play Next"></button>
+        <button id="playPrevious" title="Play Previous"></button>
+        <button id="stop" title="Stop"></button>
+        <button id="toggleDarkMode" title="Toggle Dark Mode"></button>
+    </div>
+    <div class="signature">
+        Nimrod Odhiambo
+    </div>
+
+    <script>
+        // JavaScript for button functionality
+        const videoPlayer = document.getElementById('videoPlayer');
+        const volumeUpButton = document.getElementById('volumeUp');
+        const volumeDownButton = document.getElementById('volumeDown');
+        const playNextButton = document.getElementById('playNext');
+        const playPreviousButton = document.getElementById('playPrevious');
+        const stopButton = document.getElementById('stop');
+        const toggleDarkModeButton = document.getElementById('toggleDarkMode');
+
+        // Volume Control
+        volumeUpButton.addEventListener('click', () => {
+            if (videoPlayer.volume < 1) videoPlayer.volume += 0.1;
+        });
+
+        volumeDownButton.addEventListener('click', () => {
+            if (videoPlayer.volume > 0) videoPlayer.volume -= 0.1;
+        });
+
+        // Play Next (Example: Switch to a new video)
+        playNextButton.addEventListener('click', () => {
+            videoPlayer.src = 'https://www.w3schools.com/html/mov_bbb.mp4'; // Replace with next video URL
+            videoPlayer.play();
+        });
+
+        // Play Previous (Example: Switch to a previous video)
+        playPreviousButton.addEventListener('click', () => {
+            videoPlayer.src = 'https://www.w3schools.com/html/mov_bbb.mp4'; // Replace with previous video URL
+            videoPlayer.play();
+        });
+
+        // Stop Video
+        stopButton.addEventListener('click', () => {
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+        });
+
+        // Toggle Dark Mode
+        toggleDarkModeButton.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+        });
+
+        // Three-Dot Icon and Menu Functionality
+        const threeDotIcon = document.getElementById('threeDotIcon');
+        const menu = document.getElementById('menu');
+
+        threeDotIcon.addEventListener('click', () => {
+            menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
+        });
+
+        // Menu Button Actions
+        document.getElementById('home').addEventListener('click', () => {
+            alert('HOME clicked');
+        });
+
+        document.getElementById('myVideos').addEventListener('click', () => {
+            alert('MY VIDEOS clicked');
+        });
+
+        document.getElementById('recentlyWatched').addEventListener('click', () => {
+            alert('RECENTLY WATCHED clicked');
+        });
+
+        document.getElementById('logout').addEventListener('click', () => {
+            alert('LOGOUT clicked');
+        });
+    </script>
+</body>
+</html>
+   
